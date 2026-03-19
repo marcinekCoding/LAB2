@@ -1,0 +1,9 @@
+# Programy wykonywalne (wynikowe)
+lab2
+
+# Pliki obiektowe (tymczasowe pliki kompilacji)
+*.o
+
+# Biblioteki statyczne i dynamiczne
+*.a
+*.so
