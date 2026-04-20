@@ -6,8 +6,8 @@ LDFLAGS=-fsanitize=address,leak
 
 all: l3
 
-l3: main.cpp subtask.cpp
-	$(CXX) -o l3 main.cpp subtask.cpp
+l3: main.cpp subtask.cpp task.cpp
+	$(CXX) -o l3 main.cpp subtask.cpp task.cpp
 
 
 
