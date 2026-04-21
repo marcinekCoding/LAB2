@@ -43,14 +43,14 @@ int main() {
     t2.print();
     t2.clear();
     t2.print();
-    
+
     std::cout << "\n*************** PART 3 (Task - copy/move) ***************\n\n";
-    /*
+    
     Task t_copy1(t1);
     std::cout << "Task copy (constructor):" << std::endl;
     t_copy1.print();
 
-    Task t_copy2;
+    Task t_copy2("gowno");
     t_copy2 = t1;
     std::cout << "\nTask copy (assignment):" << std::endl;
     t_copy1.print();
@@ -59,11 +59,11 @@ int main() {
     std::cout << "\nTask moved (constructor):" << std::endl;
     t_move1.print();
 
-    Task t_move2;
+    Task t_move2("gowno2");
     t_move2 = std::move(t_copy2);
     std::cout << "\nTask moved (assignment):" << std::endl;
     t_move2.print();
-    */
+
 
     return 0;
 }

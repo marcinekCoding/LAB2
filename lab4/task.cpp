@@ -112,18 +112,58 @@ void Task::print() const
         temp = temp->next;
     }
 }
-Task::Task(Task& przypisanie)
+Task::Task(const Task &przypisanie) : description(przypisanie.description)
 {
-    
+    if (przypisanie.head == nullptr)
+    {
+        this->head = nullptr;
+        return;
+    }
+    head = new SubtaskNode(przypisanie.head->data);
+    SubtaskNode *temp1 = head;
+    SubtaskNode *temp2 = przypisanie.head->next;
+ 
+    while (temp2 != nullptr)
+    {
+        SubtaskNode *nowy = new SubtaskNode(temp2->data);
+        temp1->next = nowy;
+        temp1 = nowy;
+        temp2 = temp2->next;
+    }
+    temp1->next = nullptr;
 }
 
-Task::Task(Task &&przeniesienie)
+Task::Task(Task &&przeniesienie) : description(przeniesienie.description)
 {
-
+    this->head = przeniesienie.head;
+    przeniesienie.head = nullptr;
 } // zmienna ktora zaraz umrze
 Task &Task::operator=(Task &przypisanie)
 {
+    if (this == &przypisanie) return *this;
+    clear();
+    if (przypisanie.head == nullptr)
+    {
+        this->head = nullptr;
+        return *this;
+    }
+    this->description = przypisanie.description;
+    head = new SubtaskNode(przypisanie.head->data);
+    SubtaskNode *temp1 = head;
+    SubtaskNode *temp2 = przypisanie.head->next;
+ 
+    while (temp2 != nullptr)
+    {
+        SubtaskNode *nowy = new SubtaskNode(temp2->data);
+        temp1->next = nowy;
+        temp1 = nowy;
+        temp2 = temp1->next;
+    }
+    return *this;
 }
 Task &Task::operator=(Task &&przeniesienie)
 {
+    this->head = przeniesienie.head;
+    przeniesienie.head = nullptr;
+    return *this;
 }

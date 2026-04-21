@@ -14,7 +14,7 @@ private:
 public:
     Task(std::string opis) : description(opis), head(nullptr) {}
     ~Task();
-    Task(Task& przypisanie);
+    Task(const Task& przypisanie);
     Task(Task&& przeniesienie); //zmienna ktora zaraz umrze
     Task& operator =(Task& przypisanie);
     Task& operator =(Task&& przeniesienie);
