@@ -5,40 +5,56 @@ Task::~Task()
 {
     // usuwanie
     description = "empty";
-    // usuwanie zaalokowanej pamieci
-    SubtaskNode *temp = head;
-    while (temp->next != nullptr)
-    {
-        head = temp;
-        temp = temp->next;
-        head = nullptr;
-    }
+    clear();
 }
 
 void Task::add_subtask(const Subtask &subtask)
 {
     int priorytet = subtask.get_priority();
+
     SubtaskNode *temp = head;
-    while (temp->next != nullptr && temp->data.get_priority() >= priorytet)
+    SubtaskNode *prev = head;
+
+    SubtaskNode *doloczany = new SubtaskNode(subtask);
+
+    if (head == nullptr || head->data.get_priority() < priorytet)
     {
-        temp = temp->next;
+        doloczany->next = head;
+        head = doloczany;
+        return;
     }
-    SubtaskNode *doloczany;
-    doloczany->data = subtask;
-    doloczany->next = nullptr;
-    temp->next = doloczany;
+    while (temp != nullptr)
+    {
+
+        if (temp->data.get_priority() < priorytet)
+        {
+            prev->next = doloczany;
+            doloczany->next = temp;
+            return;
+        }
+        else
+        {
+            prev = temp;
+            temp = temp->next;
+        }
+    }
+    prev->next = doloczany; // To po wyjściu z pętli, jeśli nie zrobiono return
 }
 void Task::complete_subtask(unsigned int index)
 {
     int i = 0;
     SubtaskNode *temp = head;
-    while (temp->next != nullptr && i != index)
+    while (temp != nullptr)
     {
+        if(i == index)
+        {
+            temp->data.mark_completed();
+            return;
+        }
         temp = temp->next;
+        i++;
     }
-    if (temp->next == nullptr)
-        return;
-    temp->data.mark_completed();
+    
 }
 
 bool Task::is_completed() const
@@ -46,7 +62,7 @@ bool Task::is_completed() const
     SubtaskNode *temp = head;
     int yes = 0;
     int number = 0;
-    while (temp->next != nullptr)
+    while (temp != nullptr)
     {
         if (temp->data.is_completed() == true)
         {
@@ -68,28 +84,32 @@ bool Task::is_completed() const
 void Task::clear()
 {
     SubtaskNode *temp = head;
-    while (temp->next != nullptr)
+    while (temp != nullptr)
     {
         head = temp;
         temp = temp->next;
+        delete head;
         head = nullptr;
     }
 }
 
 void Task::print() const
 {
-    if(is_completed())
+    if (is_completed())
     {
-        std::cout<<"[x]";
-    }else{
-        std::cout<<"[] ";
+        std::cout << "[x]";
     }
-    std::cout<<description<<std::endl;
-    
-    SubtaskNode *temp = head;
-    while(temp->next!=nullptr)
+    else
     {
-        std::cout<<"- ";
-        temp->data.print(); 
+        std::cout << "[ ] ";
+    }
+    std::cout << description << std::endl;
+
+    SubtaskNode *temp = head;
+    while (temp != nullptr)
+    {
+        std::cout << "  - ";
+        temp->data.print();
+        temp = temp->next;
     }
 }

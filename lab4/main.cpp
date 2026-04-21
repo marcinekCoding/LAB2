@@ -24,7 +24,6 @@ int main() {
     Task t1("Finish C++ project");
     
     t1.add_subtask(Subtask("Write the documentation"));
-    std::cout<<"dodane zadanie"<<std::endl;
     t1.add_subtask(Subtask("Run tests", 5, true));
     t1.add_subtask(Subtask("Refactor the code", 3, false));
     const Subtask s4 = Subtask("Write a Makefile", 99, false);
@@ -42,7 +41,6 @@ int main() {
     t2.add_subtask(Subtask("Linear combinations", 10));
     t2.add_subtask(Subtask("Matrix multiplication", 11, true));
     t2.print();
-
     t2.clear();
     t2.print();
     
