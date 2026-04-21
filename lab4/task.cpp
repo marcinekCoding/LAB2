@@ -46,7 +46,7 @@ void Task::complete_subtask(unsigned int index)
     SubtaskNode *temp = head;
     while (temp != nullptr)
     {
-        if(i == index)
+        if (i == index)
         {
             temp->data.mark_completed();
             return;
@@ -54,7 +54,6 @@ void Task::complete_subtask(unsigned int index)
         temp = temp->next;
         i++;
     }
-    
 }
 
 bool Task::is_completed() const
@@ -112,4 +111,19 @@ void Task::print() const
         temp->data.print();
         temp = temp->next;
     }
+}
+Task::Task(Task& przypisanie)
+{
+    
+}
+
+Task::Task(Task &&przeniesienie)
+{
+
+} // zmienna ktora zaraz umrze
+Task &Task::operator=(Task &przypisanie)
+{
+}
+Task &Task::operator=(Task &&przeniesienie)
+{
 }
