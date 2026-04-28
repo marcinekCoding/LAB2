@@ -35,4 +35,31 @@ public:
     std::variant<Director, std::string> getDirector() const {return director;}
     std::list<RatingType> getRatings() const {return ratings;}
     
+    //etap 2
+   int getAverageRating()
+   {
+    RatingType mean = 0;
+    RatingType elements = 0;
+
+    if(ratings.empty()) return 0;
+
+    for(const RatingType& r : ratings)
+    {
+        elements++;
+        mean += r;
+    }
+    return mean/elements;
+   }
+
+   int getTopRating()
+   {
+    if(ratings.empty()) return 0;
+
+    RatingType max = list.begin();
+    for(RatingType& r : ratings)
+    {
+        if(max <= r) { max = r ;}
+    }
+    return max;
+   }
 };

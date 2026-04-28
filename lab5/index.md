@@ -38,7 +38,7 @@ Klasa powinna zawierać następujące elementy:
 - Konstruktor przyjmujący: tytuł, rok, reżysera (powinna być możliwość podania dowolnego z dwóch typów wyspecyfikowanych w `std::variant`) oraz opcjonalnie opis (pamiętaj o wybraniu odpowiedniej wartości domyślnej - patrz `std::optional`).
 
 **Gettery**:
-- `getTitle()`, `getYear()`, `getDescription()`, `getDirector()`, `getRatings()` – zwracające bezpośrednio wartości odpowiednich pól.
+- `getTitle()`, `getYear()`, `getYear()`, `getDirector()`, `getRatings()` – zwracające bezpośrednio wartości odpowiednich pól.
 
 Oczekiwane wyjście etapu 1:
 ```text
