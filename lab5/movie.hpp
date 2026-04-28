@@ -37,7 +37,7 @@ public:
     std::list<RatingType> getRatings() const { return ratings; }
 
     // etap 2
-    int getAverageRating()
+    RatingType getAverageRating() const
     {
         RatingType mean = 0;
         RatingType elements = 0;
@@ -53,15 +53,15 @@ public:
         return mean / elements;
     }
 
-    int getTopRating()
+    RatingType getTopRating() const
     {
         if (ratings.empty())
             return 0;
 
-        RatingType max = list.begin();
-        for (RatingType &r : ratings)
+        RatingType max = ratings.front();
+        for (const RatingType &r : ratings)
         {
-            if (max <= r)
+            if (max < r)
             {
                 max = r;
             }
@@ -79,21 +79,37 @@ public:
     }
     bool operator==(const Movie<RatingType> &movie2) const
     {
-        return this->title < movie2.title && this->year < movie2.year;
+        return this->title == movie2.title && this->year == movie2.year;
     }
-    Movie<RatingType>& operator+(RatingType& rate) {
+
+    Movie<RatingType>& operator+(const RatingType& rate) {
         ratings.push_back(rate);
+        return *this;
     }
 };
 
 template <typename RatingType>
-void operator<<(const Movie<RatingType> &m)
+std::ostream& operator<<(std::ostream& os, const Movie<RatingType> &m)
 {
-    std::cout<<m.getTitle<<" ("<<m.getYear()<<") , Director: "<<m.getDirector()<<std::endl;
-    if(std::holds_alternative<Director>(director))
-    {
-        std::cout<<"(Oscars: )"<<director.numberOfOscars;
-    }
-    std::cout<<"Avg: "<<m.getAverageRating()<<", Top: "<<m.getTopRating();
+    os << m.getTitle() << " (" << m.getYear() << "), Director: ";
     
+    auto directorVariant = m.getDirector();
+    if(std::holds_alternative<typename Movie<RatingType>::Director>(directorVariant))
+    {
+        auto dir = std::get<typename Movie<RatingType>::Director>(directorVariant);
+        os << dir.name << " (Oscars: " << dir.numberOfOscars << ")\n";
+    }
+    else
+    {
+        os << std::get<std::string>(directorVariant) << "\n";
+    }
+
+    os << "Avg: " << m.getAverageRating() << ", Top: " << m.getTopRating() << "\n";
+
+    if(m.getDescription().has_value())
+    {
+        os << "Description: " << m.getDescription().value() << "\n";
+    }
+    
+    return os;
 }
