@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include "movie.hpp"
 
 //#include "Movie.hpp"
 //#include "MovieCollection.hpp"
@@ -9,7 +10,7 @@ int main() {
     std::cout << std::fixed << std::setprecision(2);
 
     std::cout << "*************** PART 1 (Movie) ***************\n\n";
-    /*
+    
     Movie<double>::Director director1("Christopher Nolan", 2);
     Movie<double> movie1("Inception", 2010, director1, "Paprika and HSM3 rip-off");
     Movie<double> movie2("Interstellar", 2014, director1.name);
@@ -47,7 +48,7 @@ int main() {
     if (movie2.getDescription()) {
         std::cout << "Description: " << *movie2.getDescription() << "\n";
     }
-    */
+    
     std::cout << "\n*************** PART 2 (Movie - additional functionality) ***************\n\n";
     /*
     movie1 + 8.0 + 9.0 + 8.5;
