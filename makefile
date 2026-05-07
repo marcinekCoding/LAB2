@@ -1,29 +1,15 @@
-CXX=g++
+g++ = CXX
+CXXFLAGS = -std=c++17 -Wall -Wextra -O2
 
 .PHONY: all clean
 
-all: lab2
+all: main
 
-lab2: main.o vars.o libgreeter.a
-	${CXX} -o lab2 main.o vars.o libgreeter.a
+main: main.o
+	$(CXX) $(CXXFLAGS) -o main main.o
 
 main.o: main.cpp
-	${CXX} -c main.cpp -o main.o
-
-vars.o: vars.cpp
-	${CXX} -c vars.cpp -o vars.o
-
-greeter.o: greeter.cpp
-	${CXX} -c greeter.cpp -o greeter.o
-
-rome.o: rome.cpp
-	${CXX} -c -o rome.o  rome.cpp
-
-libgreeter.a: greeter.o 
-	ar rcs libgreeter.a greeter.o
-
-librome.s: rome.o
-	g++ -shared -o librome.so rome.o
+	$(CXX) $(CXXFLAGS) -c -o main.o main.cpp
 
 clean:
-	rm -f lab2 main.o vars.o greeter.o libgreeter.a
+	rm -f main.o main

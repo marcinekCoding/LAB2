@@ -1,0 +1,38 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{enumitem}
+\geometry{margin=2.5cm}
+\setstretch{1.15}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+
+\title{Wykład: Pamięć w C++}
+\author{Notatki do zajęć}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Wstęp}
+Zarządzanie pamięcią to jeden z kluczowych tematów w języku C++.
+W praktyce decyduje ono nie tylko o wydajności programu, ale również o jego
+stabilności i bezpieczeństwie.
+
+W C++ programista ma dużą kontrolę nad czasem życia obiektów oraz sposobem
+alokacji pamięci. Ta elastyczność jest ogromną zaletą, ale wymaga dobrych
+nawyków i znajomości mechanizmów języka.
+
+\section*{Punkty wyróżnione}
+\begin{itemize}[leftmargin=1.2cm]
+    \item \textbf{AddressSanitizer (ASan)} -- narzędzie do wykrywania błędów
+    związanych z pamięcią, m.in. wycieków, użycia pamięci po zwolnieniu
+    (\textit{use-after-free}) oraz przepełnień bufora.
+\end{itemize}
+
+\end{document}
