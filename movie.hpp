@@ -26,13 +26,13 @@ public:
     Movie(std::string tytul, int year, std::variant<Director, std::string> Director, std::optional<std::string> description = std::nullopt)
         : title(tytul), year(year), director(Director), description(description) {}
 
-    std::string getTitle() { return title; }
-    int getYear() { return year; }
-    std::optional<std::string> getDescription() { return description; }
-    std::variant<Director, std::string> getDirector() { return director; }
-    std::list<RatingType> getRatings() { return ratings; }
+    std::string getTitle() const { return title; }
+    int getYear() const { return year; }
+    std::optional<std::string> getDescription() const { return description; }
+    std::variant<Director, std::string> getDirector() const { return director; }
+    std::list<RatingType> getRatings() const { return ratings; }
 
-    RatingType getAverageRating()
+    RatingType getAverageRating() const
     {
         RatingType number = 0;
         RatingType sum = 0;
@@ -43,9 +43,9 @@ public:
         }
         return sum / number;
     }
-    RatingType getTopRating()
+    RatingType getTopRating() const
     {
-        RatingType maksimum = ratings.begin();
+        RatingType maksimum = ratings.front();
         for (auto i : ratings)
         {
             if (i > maksimum)
@@ -56,15 +56,15 @@ public:
         return maksimum;
     }
 
-    Movie& operator<(const Movie & mov)
+    bool operator<(const Movie & mov)
     {
         if (this->title > mov.title)
         {
-            return *this;
+            return true;
         }
-        else if (this->title > mov.title)
+        else if (this->title < mov.title)
         {
-            return mov;
+            return false;
         }
         else
         {
@@ -72,7 +72,7 @@ public:
         }
     }
 
-    Movie& operator==(const Movie& mov)
+    bool operator==(const Movie& mov)
     {
         return this->title==mov.title && this->year==mov.year;
     }
@@ -85,8 +85,21 @@ public:
 
     
 };
-
-std::ostream operator<<(std::ostream& os, const Movie& movie)
+template<class RatingType>
+std::ostream& operator<<(std::ostream& os, const Movie<RatingType>& movie)
 {
-    os<<movie.title
+    os<<movie.getTitle()<<" ("<<movie.getYear()<<"), Director: ";
+    if (std::holds_alternative<std::string>(movie.getDirector())) 
+    {
+        os<<std::get<std::string>(movie.getDirector());
+    }else 
+    {
+        os<<std::get<typename Movie<RatingType>::Director>(movie.getDirector()).name<<" (Oscars: "<<std::get<typename Movie<RatingType>::Director>(movie.getDirector()).numberOfOscars;
+    }
+    os<<", Avg: "<<movie.getAverageRating()<<", Top: "<<movie.getTopRating();
+    if(movie.getDescription().has_value())
+    {
+        os<<"Description: "<<movie.getDescription().value();
+    }
+    return os;
 }
