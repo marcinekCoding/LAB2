@@ -71,4 +71,22 @@ public:
             return this->year > mov.year;
         }
     }
+
+    Movie& operator==(const Movie& mov)
+    {
+        return this->title==mov.title && this->year==mov.year;
+    }
+
+    Movie& operator+(RatingType ocena)
+    {
+        ratings.push_back(ocena);
+        return *this;
+    }
+
+    
 };
+
+std::ostream operator<<(std::ostream& os, const Movie& movie)
+{
+    os<<movie.title
+}
