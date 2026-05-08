@@ -3,6 +3,7 @@
 #include <variant>
 #include <optional>
 #include <list>
+#include "iostream"
 
 template <typename RatingType>
 class Movie

@@ -1,6 +1,6 @@
 #include "moveCollection.hpp"
 
-auto& MovieCollection::getMoviesByLetter()
+const std::map<char, std::vector<Movie<double>>>& MovieCollection::getMoviesByLetter() const
 {
     return moviesByLetter;
 }
@@ -20,4 +20,17 @@ void MovieCollection::addMovie(const Movie<double>& movie)
 {
     char c = movie.getTitle()[0];
     moviesByLetter[c].push_back(movie);
+}
+
+std::ostream &operator<<(std::ostream &os, const MovieCollection &lolek)
+{
+    for (const auto &[c, movie] : lolek.getMoviesByLetter())
+    {
+        os << "=== " << c << " ===\n";
+        for (const auto &i : movie)
+        {
+            os << i << "\n";
+        }
+    }
+    return os;
 }
