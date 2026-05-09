@@ -10,9 +10,11 @@ private:
     std::map<char, std::vector<Movie<double>>> moviesByLetter;
 
 public:
-    const std::map<char, std::vector<Movie<double>>>&getMoviesByLetter() const;
+    const std::map<char, std::vector<Movie<double>>> &getMoviesByLetter() const;
     std::vector<Movie<double>> getAllMovies();
     void addMovie(const Movie<double> &movie);
+    void sortMovies();
+    void removeMoviesOlderThan(char letter, int year);
 };
 
 std::ostream &operator<<(std::ostream &os, const MovieCollection &lolek);

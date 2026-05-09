@@ -1,4 +1,5 @@
 #include "moveCollection.hpp"
+#include <algorithm>
 
 const std::map<char, std::vector<Movie<double>>>& MovieCollection::getMoviesByLetter() const
 {
@@ -33,4 +34,31 @@ std::ostream &operator<<(std::ostream &os, const MovieCollection &lolek)
         }
     }
     return os;
+}
+
+void MovieCollection::sortMovies()
+{
+    for(auto& [c,movies]: moviesByLetter)
+    {
+        std::sort(movies.begin(),movies.end());
+    }
+}
+
+struct Compare
+{
+    char letter; 
+    int year;    
+
+    Compare(int year) : year(year) {}
+
+    bool operator()(const Movie<double>& m) const
+    {
+        return m.getYear() < year;
+    }
+};
+void MovieCollection::removeMoviesOlderThan(char letter, int year)
+{
+    auto new_end = std::remove_if(moviesByLetter[letter].begin(),moviesByLetter[letter].end(),Compare(year));
+    moviesByLetter[letter].erase(new_end,moviesByLetter[letter].end());
+
 }
