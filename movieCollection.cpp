@@ -72,7 +72,6 @@ double MovieCollection::getAverageTopRating()
             return cur += m.getTopRating();
         }
     };
-    double srednia = 0;
     std::vector<Movie<double>> wektorek = getAllMovies();
     double ratings = std::accumulate(wektorek.begin(), wektorek.end(), 0.0, rating());
     return ratings / wektorek.size(); 
@@ -85,9 +84,15 @@ std::vector<Movie<double>> MovieCollection::getMoviesByDirector(const std::strin
         const std::string &director;
         to_copy(const std::string &director) : director(director) {}
 
-        bool operator()(const Movie<double> &m)
+        bool operator()(const Movie<double> &m) const
         {
-            return m.getDirector() == director;
+           if(std::holds_alternative<std::string>(m.getDirector()))
+           {
+            if(std::get<std::string>(m.getDirector()) == director) return true;
+           }else{
+            return std::get<Movie<double>::Director>(m.getDirector()).name == director;
+           }
+        return false;
         }
     };
     std::vector<Movie<double>> dirvec;
@@ -96,23 +101,17 @@ std::vector<Movie<double>> MovieCollection::getMoviesByDirector(const std::strin
     return dirvec;
 }
 
-Movie<double> MovieCollection::findMovieWithAverageAbove(double threshold)
+Movie<double>* MovieCollection::findMovieWithAverageAbove(double threshold)
 {
-    struct cases{
-        double warunek;
-        cases(double war) : warunek(war) {}
-
-        bool operator()(const Movie<double>& m)
+    for (auto& [letter, movies] : moviesByLetter)
+    {
+        for (auto& movie : movies)
         {
-            if(m.getAverageRating()>warunek)
+            if (movie.getAverageRating() > threshold)
             {
-                return true;
-            }else{
-                return false;
+                return &movie;
             }
         }
-    };
-    std::vector<Movie<double>> wektorek = getAllMovies();
-    auto movie_found = std::find_if(wektorek.begin(),wektorek.end(),cases(threshold));
-    return *movie_found;
+    }
+    return nullptr;
 }

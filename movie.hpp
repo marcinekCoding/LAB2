@@ -57,7 +57,7 @@ public:
         return maksimum;
     }
 
-    bool operator<(const Movie & mov)
+    bool operator<(const Movie & mov) const
     {
         if (this->title > mov.title)
         {
@@ -73,12 +73,12 @@ public:
         }
     }
 
-    bool operator==(const Movie& mov)
+    bool operator==(const Movie& mov) const
     {
         return this->title==mov.title && this->year==mov.year;
     }
 
-    Movie& operator+(RatingType ocena)
+    Movie& operator+(RatingType ocena)     
     {
         ratings.push_back(ocena);
         return *this;
