@@ -117,7 +117,7 @@ int main() {
     }
     
     std::cout << "\n*************** PART 4 (MovieCollection  - additional functionality) ***************\n\n";
-    /*
+    
     auto foundMovie = collection.findMovieWithAverageAbove(8.0);
     if (foundMovie) {
         std::cout << "Found a movie with average rating above 8.0:\n" << *foundMovie << "\n";
@@ -147,6 +147,6 @@ int main() {
     for (const auto& movie : andersonMovies) {
         std::cout << movie << "\n";
     }
-    */
+    
     return 0;
 }

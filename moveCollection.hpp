@@ -15,6 +15,9 @@ public:
     void addMovie(const Movie<double> &movie);
     void sortMovies();
     void removeMoviesOlderThan(char letter, int year);
+    double getAverageTopRating();
+    std::vector<Movie<double>> getMoviesByDirector(const std::string& director);
+    Movie<double> findMovieWithAverageAbove(double threshold);
 };
 
 std::ostream &operator<<(std::ostream &os, const MovieCollection &lolek);
