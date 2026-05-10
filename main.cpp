@@ -4,7 +4,7 @@
 // TODO: Include your header files here
 #include "Sensor.hpp"
 #define PART1
-// #define PART2
+#define PART2
 // #define PART3
 // #define PART4
 
