@@ -1,18 +1,16 @@
-g++ = CXX
-CXXFLAGS = -std=c++17 -Wall -Wextra -O2
+CXX=g++
+CXXFLAGS=-std=c++17 -Wall -fsanitize=address -g
+LDFLAGS=-fsanitize=address
 
 .PHONY: all clean
 
-all: main
+all: l5
 
-main: main.o movieCollection.o
-	$(CXX) $(CXXFLAGS) -o main main.o movieCollection.o
+l5: main.cpp
+	$(CXX) $(CXXFLAGS) -o l5 main.cpp $(LDFLAGS)
 
 main.o: main.cpp
-	$(CXX) $(CXXFLAGS) -c -o main.o main.cpp
-
-movieCollection.o: movieCollection.cpp
-	$(CXX) $(CXXFLAGS) -c -o movieCollection.o movieCollection.cpp
+	$(CXX) $(CXXFLAGS) -c -o main.o main.cpp -D PART1
 
 clean:
-	rm -f main.o main
+	rm -f *.o l5
