@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <optional>
 #include "Sensor.hpp"
 #include <unordered_map>
 #include <list>
@@ -17,6 +18,7 @@ public:
     void removeShortSensors(const std::string& type, std::size_t minCount);
     double getTotalMinSum();
     std::vector<Sensor<double>> getSensorsContaining(const std::string& keyword);
+    std::optional<Sensor<double>> findHighestRMS();
 };
 inline std::ostream &operator<<(std::ostream &os, SensorCollection &czujniki)
 {

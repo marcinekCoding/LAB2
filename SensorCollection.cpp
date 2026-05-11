@@ -56,30 +56,48 @@ void SensorCollection::removeShortSensors(const std::string &type, std::size_t m
 
 double SensorCollection::getTotalMinSum()
 {
+    double sum = 0.0;
     struct instruction
     {
-        double operator()(Sensor<double> &sensor) const
+        double operator()(double sum, const Sensor<double> &sensor) const
         {
-            return sensor.getMin();
+            return sensor.getMin()+sum;
         }
     };
     for (auto &it : sensorsByType)
     {
-        double sum = std::accumulate(it.second.begin(), it.second.end(), 0.0, instruction());
-        return sum;
+        sum = std::accumulate(it.second.begin(), it.second.end(), 0.0, instruction());
     }
+    return sum;
 }
 std::vector<Sensor<double>> SensorCollection::getSensorsContaining(const std::string &keyword)
 {
     std::list<Sensor<double>> wszystkie = getAllSensors();
     std::vector<Sensor<double>> zwracane;
-    auto instrukcja = [&keyword](const auto& sensor)
+    auto instrukcja = [&keyword](const auto &sensor)
     {
-        return sensor.getLabel().find(keyword) != std::string::npos
+        return sensor.getLabel().find(keyword) != std::string::npos;
     };
 
-    std::copy_if(wszystkie.begin(),wszystkie.end(),
-    std::back_inserter(zwracane)
-    ,instrukcja);
+    std::copy_if(wszystkie.begin(), wszystkie.end(),
+                 std::back_inserter(zwracane), instrukcja);
     return zwracane;
+}
+
+std::optional<Sensor<double>> SensorCollection::findHighestRMS()
+{
+    std::optional<Sensor<double>> endpoint;
+    std::list<Sensor<double>> wszystkie = getAllSensors();
+    if(wszystkie.empty())
+    {
+        endpoint = std::nullopt;
+        return endpoint;
+    }
+
+    auto it = std::max_element(wszystkie.begin(), wszystkie.end(), 
+        [](const auto& a, const auto& b) {
+            return a.getRMS() < b.getRMS();
+        });
+        endpoint = *it;
+        return endpoint;
 }

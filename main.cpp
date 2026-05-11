@@ -7,7 +7,7 @@
 #define PART1
 #define PART2
 #define PART3
-// #define PART4
+#define PART4
 
 int main() {
     std::cout << std::fixed << std::setprecision(2);
