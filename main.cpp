@@ -3,9 +3,10 @@
 
 // TODO: Include your header files here
 #include "Sensor.hpp"
+#include "SensorCollection.hpp"
 #define PART1
 #define PART2
-// #define PART3
+#define PART3
 // #define PART4
 
 int main() {
