@@ -1,66 +1,108 @@
 #pragma once
-#include <string>
 #include <iostream>
+#include <string>
 
-class Character
-{
+class Character {
 private:
-    std::string name;
-    int health;
-    int maxHealth;
+  std::string name;
+  int health;
+  int maxHealth;
 
 public:
-    Character(std::string nazwa, int ilosc = 100) : name(nazwa), maxHealth(ilosc), health(ilosc) {}
+  Character(std::string nazwa, int ilosc = 100)
+      : name(nazwa), maxHealth(ilosc), health(ilosc) {}
 
-    const std::string &getName() { return name; }
-    int getHealth() { return health; }
-    bool isAlive() { return health > 0; }
-    void takeDamage(int damage)
-    {
-        if (this->isAlive())
-        {
-            health -= damage;
-        }
+  const std::string &getName() { return name; }
+  int getHealth() { return health; }
+  bool isAlive() { return health > 0; }
+  void takeDamage(int damage) {
+    if (this->isAlive()) {
+      health -= damage;
     }
-    void heal(int add)
-    {
-        health += add;
-        if (health > maxHealth)
-        {
-            health = maxHealth;
-        }
+  }
+  void heal(int add) {
+    health += add;
+    if (health > maxHealth) {
+      health = maxHealth;
     }
-    virtual void attack(Character *target) = 0; // virtualna metoda
-    virtual ~Character() = default;
+  }
+  virtual void attack(Character *target) = 0; // virtualna metoda
+  virtual ~Character() = default;
 };
 
-class Warrior : public Character
-{
-private:
-    int maleeDamage;
-
+class CanCastSpells {
 public:
-    Warrior(const std::string &name, int health = 120, int damage = 15)
-        : Character(name, health), maleeDamage(damage) {}
-
-    void attack(Character *target) override
-    {
-        std::cout << "zadano obrazenia graczowi: " << target->getName() << " :" << maleeDamage << "\n";
+  int mana;
+  int maxMana;
+  CanCastSpells(int mana) : mana(mana), maxMana(mana) {}
+  int getMana() { return mana; }
+  int getMaxMana() { return maxMana; }
+  void addMana(int amount) {
+    mana += amount;
+    if (mana > maxMana) {
+      mana = maxMana;
+      std::cout << "dodano " << amount << " zostalo " << mana << "\n";
     }
+  }
+  void useMana(int amount) {
+    if (mana - amount < 0) {
+      // rzuci exception
+    } else {
+      mana -= amount;
+      std::cout << "dodano " << amount << " zostalo " << mana << "\n";
+    }
+  }
+  virtual void castSpell(Character *target) = 0;
 };
 
-class Mage : public Character
-{
+class CanUseMelee {
+public:
+  virtual void performMeleeAttack(Character *target) = 0;
+};
+
+class Warrior : public Character, public CanUseMelee {
 private:
-    int spellDamage;
+  int maleeDamage;
 
 public:
-    Mage(const std::string &name, int health = 80, int mana = 150, int damage = 20)
-        : Character(name, health), spellDamage(damage) {}
+  Warrior(const std::string &name, int health = 120, int damage = 15)
+      : Character(name, health), maleeDamage(damage) {}
 
-    void attack(Character *target) override
-    {
-        target->takeDamage(spellDamage);
-        std::cout << "zadano obrazenia graczowi: " << target->getName() << " :" << spellDamage << "\n";
-    }
+  void CanUseMelee(Character *target) { std::cout << "wykonuje atak"; }
+  void attack(Character *target) override {
+    CanUseMelee(target);
+    std::cout << "zadano obrazenia graczowi: " << target->getName() << " :"
+              << maleeDamage << "\n";
+  }
+};
+
+class Mage : public Character, public CanCastSpells, public CanUseMelee {
+private:
+  int spellDamage;
+
+public:
+  Mage(const std::string &name, int health = 80, int mana = 150,
+       int damage = 20)
+      : Character(name, health), CanCastSpells(mana), spellDamage(damage) {}
+
+  void castSpell(Character *target) override {
+    target->takeDamage(spellDamage);
+    useMana(10);
+  }
+  void attack(Character *target) override {
+    castSpell(target);
+    std::cout << "zadano obrazenia graczowi: " << target->getName() << " :"
+              << spellDamage << "\n";
+  }
+};
+
+class BattleMage : public Character, public CanCastSpells, public CanUseMelee {
+  int meleeDmg;
+  int spellDamage;
+  BattleMage(std::string name, int health, int mana, int meleeDmg = 10,
+             int spellDamage = 15)
+      : Character(name, health), CanCastSpells(mana), meleeDmg(meleeDmg),
+        spellDamage(spellDamage) {}
+
+  void attack(Character *target) override {}
 };
