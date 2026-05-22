@@ -5,7 +5,7 @@
 #include "Character.hpp"
 
 #define STAGE_1
-//#define STAGE_2
+#define STAGE_2
 //#define STAGE_3
 
 int main() {

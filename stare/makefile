@@ -1,29 +1,18 @@
 CXX=g++
+CXXFLAGS=-std=c++17
 
 .PHONY: all clean
 
-all: lab2
+all: l5
 
-lab2: main.o vars.o libgreeter.a
-	${CXX} -o lab2 main.o vars.o libgreeter.a
+l5: main.o sensor.o
+	$(CXX) $(CXXFLAGS) -o l5 main.o sensor.o
 
 main.o: main.cpp
-	${CXX} -c main.cpp -o main.o
+	$(CXX) $(CXXFLAGS) -c -o main.o main.cpp -D PART3
 
-vars.o: vars.cpp
-	${CXX} -c vars.cpp -o vars.o
-
-greeter.o: greeter.cpp
-	${CXX} -c greeter.cpp -o greeter.o
-
-rome.o: rome.cpp
-	${CXX} -c -o rome.o  rome.cpp
-
-libgreeter.a: greeter.o 
-	ar rcs libgreeter.a greeter.o
-
-librome.so: rome.o
-	g++ -shared -o librome.so rome.o
+sensor.o: SensorCollection.cpp
+	$(CXX) $(CXXFLAGS) -c -o sensor.o SensorCollection.cpp
 
 clean:
-	rm -f lab2 main.o vars.o greeter.o libgreeter.a rome.o librome.so
+	rm -f *.o l5
