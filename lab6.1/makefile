@@ -1,11 +1,13 @@
 CXX=g++
-CXXFLAGS=-std=c++17 -Wall -fsanitize=address,leak -g
+CXXFLAGS=-std=c++20 -Wall -fsanitize=address,leak -g
 LDFLAGS=-fsanitize=address,leak
 
-.PHONY: all clean
+.PHONY: all clean run
 
 all: l6
 
+run:
+	./l6
 l6:
 # TODO: Add the object files to the target
 l6: main.cpp Cargoes.cpp Transport.cpp
