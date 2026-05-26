@@ -111,6 +111,7 @@ class BattleMage : public Character, public CanCastSpells, public CanUseMelee {
       : Character(name, health), CanCastSpells(mana), meleeDmg(meleeDmg),
         spellDamage(spellDamage) {}
 
+<<<<<<< HEAD
   void attack(Character *target) override {
     srand(static_cast<unsigned int>(time(0)));
     int choice = rand() % 2;
@@ -136,3 +137,7 @@ class BattleMage : public Character, public CanCastSpells, public CanUseMelee {
     }
   }
 };
+=======
+  void attack(Character *target) override {}
+};
+>>>>>>> e4ae0b57653a064dbcb90653183cee24cb4a4ffc

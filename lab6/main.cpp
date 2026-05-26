@@ -10,7 +10,7 @@
 
 int main() {
     srand(static_cast<unsigned int>(time(0)));
-
+    
     std::cout << "--- Etap 1: Podstawowe Dziedziczenie i Polimorfizm ---" << std::endl;
     {
 #ifdef STAGE_1

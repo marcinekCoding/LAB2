@@ -9,8 +9,13 @@ OBJS = $(SRCS:.cpp=.o)
 
 all: $(TARGET)
 
+<<<<<<< HEAD
 $(TARGET): $(OBJS)
 
 #pragma once
 
 #include <string>
+=======
+main: main.cpp
+	g++ -o main main.cpp
+>>>>>>> e4ae0b57653a064dbcb90653183cee24cb4a4ffc
