@@ -1,7 +1,14 @@
 #pragma once
+#include <exception>
 #include <iostream>
 #include <string>
 
+class NoManaException : public std::exception {
+public:
+  const char *what() const noexcept override {
+    return "Not enough mana to perform this action.";
+  }
+};
 class Character {
 private:
   std::string name;
@@ -104,5 +111,28 @@ class BattleMage : public Character, public CanCastSpells, public CanUseMelee {
       : Character(name, health), CanCastSpells(mana), meleeDmg(meleeDmg),
         spellDamage(spellDamage) {}
 
-  void attack(Character *target) override {}
+  void attack(Character *target) override {
+    srand(static_cast<unsigned int>(time(0)));
+    int choice = rand() % 2;
+
+    if (choice == 0) {
+      std::cout << "BattleMage " << getName() << " prepares to cast a spell..."
+                << std::endl;
+      try {
+        castSpell(target);
+      } catch (const NoManaException &e) {
+        std::cout << "BattleMage " << getName()
+                  << " tried to cast a spell but is "
+                     "out of mana! "
+                  << e.what() << std::endl;
+        std::cout << "BattleMage " << getName()
+                  << " resorts to a melee attack instead!" << std::endl;
+        performMeleeAttack(target);
+      }
+    } else {
+      std::cout << "BattleMage " << getName()
+                << " prepares for a melee attack..." << std::endl;
+      performMeleeAttack(target);
+    }
+  }
 };

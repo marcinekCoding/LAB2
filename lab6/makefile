@@ -1,6 +1,16 @@
+CXX = g++
+CXXFLAGS =   
+TARGET = program_etap1
+
+SRCS = $(wildcard *.cpp)
+OBJS = $(SRCS:.cpp=.o)
+
 .PHONY: all clean
 
-all: main
+all: $(TARGET)
 
-main: main.cpp
-	g++ -o main main.cpp
+$(TARGET): $(OBJS)
+
+#pragma once
+
+#include <string>
