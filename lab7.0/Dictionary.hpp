@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <vector>
 #include "hasher.hpp"
+#include <iostream>
 
 template <typename K, typename V>
 class KeyValuePair
@@ -51,12 +52,41 @@ public:
         hash %= Capacity;
         return hash;
     }
-    void insert(const K &key, const V &value){
-        KeyValuePair(key,value);
+    void insert(const K &key, const V &value)
+    {
+        KeyValuePair<K, V> nowy = new KeyValuePair(key, value);
         size_t idx = hash(key);
-        
-        if(table[idx]== nullptr) {
 
+        if (table[idx] == nullptr)
+        {
+            table[idx] = nowy;
         }
+        else
+        {
+            while (table[idx]->next != nullptr)
+            {
+                table[idx] = table[idx]->next;
+            }
+            table[idx]->next = nowy;
+        }
+    }
+
+    friend std::ostream& operator<<(std:ostream& os, const Dictionary& dict)
+    {
+        for (auto *it : dict.table)
+        {
+            std::cout << "Klucz: " << it->key << "\n";
+            auto *temp = it;
+            while (temp != nullptr)
+            {
+                os<< "Wartosc: " << it->value << "\n";
+                temp = temp->next;
+            }
+        }
+        return os;
+    }
+
+    V& operator[](K& key){
+
     }
 };
