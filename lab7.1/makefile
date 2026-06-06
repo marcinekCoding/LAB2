@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-std=c++20 -Wall -fsanitize=address,leak -g
+CXXFLAGS=-std=c++20 
 
 LDFLAGS=-fsanitize=address,leak
 
@@ -7,8 +7,8 @@ LDFLAGS=-fsanitize=address,leak
 
 all: l7
 
-l7: main.cpp matrix.cpp 
-	$(CXX) -o l7 main.cpp matrix.cpp 
+l7: main.cpp
+	$(CXX) $(CXXFLAGS) -o l7 main.cpp
 
 clean:
 	rm -f *.o l7

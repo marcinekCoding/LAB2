@@ -86,3 +86,15 @@ Zaimplementuj publiczny getter getDet(), który zwróci wartość prywatnego pol
 
 Zaimplementuj statyczną metodę identity(), która będzie metodą fabryczną zwracającą nowe macierze jednostkowe, ustawiając na przekątnej 1 oraz w pozostałych miejscach 0.
 
+
+Etap 4: Specjalizacja klasy SquareMatrix [3 pkt] #
+
+Zaimplementuj specjalizację klasy szablonowej SquareMatrix dla rozmiaru równego 2.
+
+Dla macierzy 2x2 dużo łatwiej jest obliczyć wyznacznik: wystarczy policzyć iloczyny na przekątnych macierzy i odjąć je od siebie:
+
+alt text
+
+W specjalizacji klasy SquareMatrix dla rozmiaru równego 2 zaimplementuj powyższą metodę liczenia wyznacznika. W metodzie wypisz komunikat “Calculating determinant in 2x2 square matrix class specialization”.
+
+Uwaga: Specjalizacja klasy może wymagać implementacji innych metod z klasy SquareMatrix.

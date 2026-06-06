@@ -3,8 +3,8 @@
 
 #define STAGE_1
 #define STAGE_2
-//#define STAGE_3
-//#define STAGE_4
+#define STAGE_3
+#define STAGE_4
 
 // TODO: Include all necessary headers
 #include "matrix.hpp"
