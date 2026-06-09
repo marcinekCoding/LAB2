@@ -1,0 +1,40 @@
+
+--- Stage 1: RingBuffer definition, push, isEmpty, isFull, size ---
+Empty: true
+Full: false
+Size: 0
+push(10): true
+push(20): true
+push(30): true
+Size after 3 pushes: 3
+Full: false
+push(40): true
+Full after 4th push: true
+push(50) rejected: false
+Size unchanged: 4
+
+--- Stage 2: pop, front, back, operator<< ---
+Queue: 10 20 30
+front: 10
+back: 30
+After pop: 20 30
+front: 20
+pop on empty: false
+front on empty has value: false
+Wrap-around queue: 3 4 5
+
+--- Stage 3: initializer_list constructor ---
+From {1,2,3,4,5} with capacity 3: 1 2 3
+Size: 3
+Full: true
+Letters: a b c
+
+--- Stage 4: RingBuffer<T, 1> specialization ---
+push(100): true
+Content: 100
+push(200) overwrites: true
+Content: 200
+front: 200
+Size still: 1
+After pop empty: true
+Content: ''

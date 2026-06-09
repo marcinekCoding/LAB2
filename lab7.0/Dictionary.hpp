@@ -87,6 +87,9 @@ public:
     }
 
     V& operator[](K& key){
-
+        size_t idx = hash(key);
+        if(table[idx] == nullptr) {
+            
+        }
     }
 };

@@ -1,0 +1,44 @@
+
+--- Stage 1: FixedStack definition, push, isEmpty, isFull, size ---
+Empty: true
+Full: false
+Size: 0
+push(10): true
+push(20): true
+push(30): true
+Size after 3 pushes: 3
+push(40): true
+Full: true
+push(50) rejected: false
+Size unchanged: 4
+
+--- Stage 2: pop, top, popValue, operator<< ---
+Stack: 10 20 30
+top: 30
+popValue: 30
+After popValue: 10 20
+After pop: 10
+pop on empty: false
+top on empty has value: false
+popValue on empty has value: false
+
+--- Stage 3: initializer_list constructor and clear ---
+From {a,b,c,d} with capacity 3: a b c
+Size: 3
+After clear empty: true
+After clear size: 0
+
+--- Stage 4: FixedStack<T, 0> specialization ---
+push: false
+pop: false
+isEmpty: true
+isFull: true
+size: 0
+top has value: false
+Output: ''
+
+--- Stage 5: merge ---
+a: 1 2
+b: 3 4 5
+merged: 1 2 3 4
+merged size: 4

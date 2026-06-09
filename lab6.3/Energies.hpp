@@ -11,7 +11,7 @@ public:
   virtual ~EnergySource() = default;
   static int number;
   uint64_t getID() const { return id; }
-  std::string getGridZone() const { return gridZone; }
+  std::string getGridZone() aconst { return gridZone; }
   virtual std::string getSpecs() const = 0;
   virtual double calculateOutput() const = 0;
   virtual EnergySource *clone() const = 0;

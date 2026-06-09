@@ -3,7 +3,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <algorithm>
-//#include "Dictionary.hpp"
+#include "Dictionary.hpp"
 
 std::vector<std::string> getWords(std::string text)
 {
