@@ -16,6 +16,6 @@ void StandardDistributor::injectEnergy(EnergySource *source) {
     delete source;
     throw std::runtime_error("overloading");
   } else {
-    // czemu to nie dziala getSources().push_back(source);
+    // czemu to nie dziala? getSources().push_back(source);
   }
 }
