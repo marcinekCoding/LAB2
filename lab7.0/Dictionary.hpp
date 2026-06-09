@@ -21,14 +21,14 @@ public:
   Dictionary();
   ~Dictionary();
 
-  std::size_t hash(const K &key);
+  std::size_t hash(const K &key) const;
   void insert(const K &key, const V &value);
 
   template <typename K_, typename V_, int Capacity_>
   friend std::ostream &operator<<(std::ostream &os,
                                   const Dictionary<K_, V_, Capacity_> &d);
 
-  const V &operator[](const K &key);
+  V &operator[](const K &key);
   std::optional<V> get(const K &key) const;
   bool remove(const K &key);
 
@@ -50,17 +50,17 @@ Dictionary<K, V, Capacity>::~Dictionary() {
     while (next != nullptr) {
       curr = next;
       next = curr->next;
-      curr = nullptr;
+      delete curr;
     }
 
     value = nullptr;
+    delete value;
   }
 }
 template <typename K, typename V, int Capacity>
-size_t Dictionary<K, V, Capacity>::hash(const K &key) {
-  size_t rtr = Hash<K>(key);
-  rtr = rtr % Capacity;
-  return rtr;
+size_t Dictionary<K, V, Capacity>::hash(const K &key) const {
+  Hash<K> hasher;
+  return hasher(key) % Capacity;
 }
 template <typename K, typename V, int Capacity>
 void Dictionary<K, V, Capacity>::insert(const K &key, const V &value) {
@@ -83,6 +83,8 @@ std::ostream &operator<<(std::ostream &os,
                          const Dictionary<K, V, Capacity> &d) {
   // operaoyt wypisyuwania
   for (const auto *it : d.table) {
+    if (it == nullptr)
+      continue;
     os << "Key: " << it->key << "\n";
     auto *temp = it;
     while (temp != nullptr) {
@@ -91,9 +93,10 @@ std::ostream &operator<<(std::ostream &os,
     }
     os << "\n";
   }
+  return os;
 }
 template <typename K, typename V, int Capacity>
-const V &Dictionary<K, V, Capacity>::operator[](const K &key) {
+V &Dictionary<K, V, Capacity>::operator[](const K &key) {
   size_t idx = hash(key);
   auto *nowy = new KeyValuePair<K, V>(key, V{});
 
@@ -109,6 +112,7 @@ const V &Dictionary<K, V, Capacity>::operator[](const K &key) {
     }
     temp = temp->next;
   }
+  if(temp->key == key) return temp->value;
   temp->next = nowy;
   return nowy->value;
 }
@@ -119,7 +123,7 @@ std::optional<V> Dictionary<K, V, Capacity>::get(const K &key) const {
     return std::nullopt;
   }
   auto *temp = table[idx];
-  while (temp->next != nullptr) {
+  while (temp != nullptr) {
     if (temp->key == key) {
       return temp->value;
     }
@@ -139,8 +143,13 @@ bool Dictionary<K, V, Capacity>::remove(const K &key) {
 
   while (temp != nullptr) {
     if (temp->key == key) {
+      if (prev == nullptr) {
+        table[idx] = temp->next;
+        delete temp;
+        return true;
+      }
       prev->next = temp->next;
-      temp = nullptr;
+      delete temp;
       // czy musze robic free?
       return true;
     }
