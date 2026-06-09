@@ -1,36 +1,39 @@
-#include <vector>
-#include <string>
-#include <iostream>
-#include <unordered_map>
-#include <algorithm>
 #include "Dictionary.hpp"
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
-std::vector<std::string> getWords(std::string text)
-{
-    std::vector<std::string> wordList;
-    size_t lastSpacePos = 0;
-    auto nextSpacePos = std::min(text.find(" "), text.find("/n"));
-    std::string word = "";
-    while (nextSpacePos != std::string::npos)
-    {
-        word = text.substr(lastSpacePos, nextSpacePos - lastSpacePos);
-        lastSpacePos = nextSpacePos + 1;
-        nextSpacePos = std::min(text.find(" ", lastSpacePos), text.find("/n", lastSpacePos));
+std::vector<std::string> getWords(std::string text) {
+  std::vector<std::string> wordList;
+  size_t lastSpacePos = 0;
+  auto nextSpacePos = std::min(text.find(" "), text.find("/n"));
+  std::string word = "";
+  while (nextSpacePos != std::string::npos) {
+    word = text.substr(lastSpacePos, nextSpacePos - lastSpacePos);
+    lastSpacePos = nextSpacePos + 1;
+    nextSpacePos =
+        std::min(text.find(" ", lastSpacePos), text.find("/n", lastSpacePos));
 
-        word.erase(std::remove_if(word.begin(), word.end(), [](char c) { return !(c == '\'' || c == '-' || std::isalpha(c)); }), word.end());
-        if (word != "" && word.front() == '\'')
-            word.erase(0);
-        if (word != "" && word.back() == '\'')
-            word.erase(word.size() - 1);
-        if (word != "")
-            wordList.emplace_back(word);
-    }
-    return wordList;
+    word.erase(std::remove_if(word.begin(), word.end(),
+                              [](char c) {
+                                return !(c == '\'' || c == '-' ||
+                                         std::isalpha(c));
+                              }),
+               word.end());
+    if (word != "" && word.front() == '\'')
+      word.erase(0);
+    if (word != "" && word.back() == '\'')
+      word.erase(word.size() - 1);
+    if (word != "")
+      wordList.emplace_back(word);
+  }
+  return wordList;
 }
 
-int main()
-{
-    std::string text = "If you happen to have read another book about \
+int main() {
+  std::string text = "If you happen to have read another book about \
 		Christopher Robin, you may remember that he once had \
 		a swan (or the swan had Christopher Robin, I don't \
 		know which), and that he used to call this swan Pooh. \
@@ -82,60 +85,60 @@ int main()
 		So perhaps the best thing to do is to stop writing \
 		Introductions and get on with the book. ";
 
-    auto words = getWords(text);
-    auto chosenWords = { "he", "He", "Pooh", "the", "The", "I" };
-    std::cout << "------------------PART 0.1------------------" << std::endl;
-    std::cout << "Test using STL unordered_map" << std::endl;
-    std::unordered_map<std::string, int> wordCountSTL;
-    for (auto& word : words)
-    {
-        wordCountSTL[word]++;
-    }
-    std::cout << "Chosen words for the check:" << std::endl;
-    for (auto& word : chosenWords)
-    {
-        std::cout << word << ": " << wordCountSTL[word] << std::endl;
-    }
-    std::cout << "------------------PART 1, 2 and 3------------------" << std::endl;
-//    Dictionary<std::string, int> wordCountTemplated;
-//    for (auto& word : words)
-//    {
-//    	wordCountTemplated[word]++;
-//    }
-//    for (auto& word : chosenWords)
-//    {
-//    	std::cout << word << ": " << wordCountTemplated[word] << std::endl;
-//    }
-//    std::cout << "Dictionary for mapping numbers and number english names:" << std::endl;
-//    Dictionary<int, std::string> numbersEnglishNames;
-//    numbersEnglishNames.insert(1, "one");
-//    numbersEnglishNames.insert(2, "two");
-//    numbersEnglishNames.insert(100, "hundred");
-//    std::cout << numbersEnglishNames << std::endl;
-    std::cout << "------------------PART 4------------------" << std::endl;
-//    std::cout << numbersEnglishNames << std::endl;
+  auto words = getWords(text);
+  auto chosenWords = {"he", "He", "Pooh", "the", "The", "I"};
+  std::cout << "------------------PART 0.1------------------" << std::endl;
+  std::cout << "Test using STL unordered_map" << std::endl;
+  std::unordered_map<std::string, int> wordCountSTL;
+  for (auto &word : words) {
+    wordCountSTL[word]++;
+  }
+  std::cout << "Chosen words for the check:" << std::endl;
+  for (auto &word : chosenWords) {
+    std::cout << word << ": " << wordCountSTL[word] << std::endl;
+  }
+  std::cout << "------------------PART 1, 2 and 3------------------"
+            << std::endl;
+  //    Dictionary<std::string, int> wordCountTemplated;
+  //    for (auto& word : words)
+  //    {
+  //    	wordCountTemplated[word]++;
+  //    }
+  //    for (auto& word : chosenWords)
+  //    {
+  //    	std::cout << word << ": " << wordCountTemplated[word] <<
+  //    std::endl;
+  //    }
+  //    std::cout << "Dictionary for mapping numbers and number english names:"
+  //    << std::endl; Dictionary<int, std::string> numbersEnglishNames;
+  //    numbersEnglishNames.insert(1, "one");
+  //    numbersEnglishNames.insert(2, "two");
+  //    numbersEnglishNames.insert(100, "hundred");
+  //    std::cout << numbersEnglishNames << std::endl;
+  std::cout << "------------------PART 4------------------" << std::endl;
+  //    std::cout << numbersEnglishNames << std::endl;
 
-    std::cout << "------------------PART 5------------------" << std::endl;
-//    Dictionary<int, std::string> numbersEnglishNames2;
-//    numbersEnglishNames2.insert(3, "three");
-//    numbersEnglishNames2.insert(4, "four");
-//    numbersEnglishNames2.insert(100, "onehundred");
-//
-//    auto intersect = numbersEnglishNames.intersect(numbersEnglishNames2);
-//    std::cout << intersect << std::endl;
+  std::cout << "------------------PART 5------------------" << std::endl;
+  //    Dictionary<int, std::string> numbersEnglishNames2;
+  //    numbersEnglishNames2.insert(3, "three");
+  //    numbersEnglishNames2.insert(4, "four");
+  //    numbersEnglishNames2.insert(100, "onehundred");
+  //
+  //    auto intersect = numbersEnglishNames.intersect(numbersEnglishNames2);
+  //    std::cout << intersect << std::endl;
 
-    std::cout << "------------------PART 6------------------" << std::endl;
-//    auto sum = numbersEnglishNames + numbersEnglishNames2;
-//    std::cout << sum << std::endl;
-    std::cout << "------------------PART 7------------------" << std::endl;
-//    try {
-//    	numbersEnglishNames.remove(3);
-//    }
-//    catch (std::exception& e) {
-//    	std::cout << e.what() << std::endl;
-//    }
-//    auto intersect2 = numbersEnglishNames.intersect(numbersEnglishNames2);
-//    std::cout << intersect2 << std::endl;
-//
-//    return 0;
+  std::cout << "------------------PART 6------------------" << std::endl;
+  //    auto sum = numbersEnglishNames + numbersEnglishNames2;
+  //    std::cout << sum << std::endl;
+  std::cout << "------------------PART 7------------------" << std::endl;
+  //    try {
+  //    	numbersEnglishNames.remove(3);
+  //    }
+  //    catch (std::exception& e) {
+  //    	std::cout << e.what() << std::endl;
+  //    }
+  //    auto intersect2 = numbersEnglishNames.intersect(numbersEnglishNames2);
+  //    std::cout << intersect2 << std::endl;
+  //
+  //    return 0;
 }

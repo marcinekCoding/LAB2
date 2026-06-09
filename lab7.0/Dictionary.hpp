@@ -3,8 +3,8 @@
 #include <cstddef>
 #include <optional>
 #include <ostream>
-template <typename K, typename V> class KeyValuePair {
-protected:
+template <typename K, typename V> struct KeyValuePair {
+public:
   K key;
   V value;
   KeyValuePair<K, V> *next;
@@ -31,7 +31,10 @@ public:
   const V &operator[](const K &key);
   std::optional<V> get(const K &key) const;
   bool remove(const K &key);
+
+  void intersect(const Dictionary &other) const;
 };
+
 template <typename K, typename V, int Capacity>
 Dictionary<K, V, Capacity>::Dictionary() {
   for (auto *it : table) {
@@ -145,4 +148,18 @@ bool Dictionary<K, V, Capacity>::remove(const K &key) {
     temp = temp->next;
   }
   return false;
+}
+
+template <typename K, typename V, int Capacity>
+void Dictionary<K, V, Capacity>::intersect(const Dictionary &other) const {
+  Dictionary<K, V, Capacity> slownik_nowy = *this;
+
+  for (auto *it : other.table) {
+    auto *temp = it;
+    while (temp != nullptr) {
+      size_t idx = hash(temp->key);
+      slownik_nowy.insert(temp->key, other[temp->key]);
+      temp = temp->next;
+    }
+  }
 }
