@@ -1,5 +1,6 @@
 #pragma once
 #include "hasher.hpp"
+#include <stdexcept>
 #include <cstddef>
 #include <optional>
 #include <ostream>
@@ -15,7 +16,7 @@ public:
   KeyValuePair(K key, V value) : key(key), value(value), next(nullptr) {}
 };
 
-template <typename K, typename V, int Capacity>
+template <typename K, typename V, int Capacity = 100>
 class Dictionary
 {
 protected:
@@ -23,6 +24,7 @@ protected:
 
 public:
   Dictionary();
+  Dictionary(const Dictionary &other);
   ~Dictionary();
 
   std::size_t hash(const K &key) const;
@@ -36,16 +38,34 @@ public:
   std::optional<V> get(const K &key) const;
   bool remove(const K &key);
 
-  void intersect(const Dictionary &other) const;
+  Dictionary intersect(const Dictionary &other) const;
   Dictionary operator+(const Dictionary &other) const;
 };
 
 template <typename K, typename V, int Capacity>
 Dictionary<K, V, Capacity>::Dictionary()
 {
-  for (auto *it : table)
+  for (auto &it : table)
   {
     it = nullptr;
+  }
+}
+
+template <typename K, typename V, int Capacity>
+Dictionary<K, V, Capacity>::Dictionary(const Dictionary &other)
+{
+  for (auto &it : table)
+  {
+    it = nullptr;
+  }
+  for (auto *it : other.table)
+  {
+    auto *temp = it;
+    while (temp != nullptr)
+    {
+      insert(temp->key, temp->value);
+      temp = temp->next;
+    }
   }
 }
 template <typename K, typename V, int Capacity>
@@ -118,14 +138,14 @@ template <typename K, typename V, int Capacity>
 V &Dictionary<K, V, Capacity>::operator[](const K &key)
 {
   size_t idx = hash(key);
-  auto *nowy = new KeyValuePair<K, V>(key, V{});
 
   if (table[idx] == nullptr)
   {
+    auto *nowy = new KeyValuePair<K, V>(key, V{});
     table[idx] = nowy;
     return nowy->value;
   }
-  // tutaj nie wiem do konca o co chodzi w poleceniu
+  // Znaleziono element wczesniej, jesli nie, wstawiamy na koniec
   auto *temp = table[idx];
   while (temp->next != nullptr)
   {
@@ -137,6 +157,8 @@ V &Dictionary<K, V, Capacity>::operator[](const K &key)
   }
   if (temp->key == key)
     return temp->value;
+    
+  auto *nowy = new KeyValuePair<K, V>(key, V{});
   temp->next = nowy;
   return nowy->value;
 }
@@ -166,7 +188,7 @@ bool Dictionary<K, V, Capacity>::remove(const K &key)
   size_t idx = hash(key);
   if (table[idx] == nullptr)
   {
-    return false;
+    throw std::invalid_argument("Key not found in dictionary");
   }
   auto *temp = table[idx];
   KeyValuePair<K, V> *prev = nullptr;
@@ -183,34 +205,48 @@ bool Dictionary<K, V, Capacity>::remove(const K &key)
       }
       prev->next = temp->next;
       delete temp;
-      // czy musze robic free?
       return true;
     }
     prev = temp;
     temp = temp->next;
   }
-  return false;
+  throw std::invalid_argument("Key not found in dictionary");
 }
 
 template <typename K, typename V, int Capacity>
-void Dictionary<K, V, Capacity>::intersect(const Dictionary &other) const
+Dictionary<K, V, Capacity> Dictionary<K, V, Capacity>::intersect(const Dictionary &other) const
 {
-  // nie chce mi sie 
+  Dictionary<K, V, Capacity> slownik_nowy;
+
+  for (auto *it : this->table)
+  {
+    auto *temp = it;
+    while (temp != nullptr)
+    {
+      if (other.get(temp->key).has_value())
+      {
+        slownik_nowy.insert(temp->key, temp->value);
+      }
+      temp = temp->next;
+    }
+  }
+  return slownik_nowy;
 }
 
 
 template <typename K, typename V, int Capacity>
-Dictionary<K,V,Capacity> Dictionary<K,V,Capacity>::operator+(const Dictionary &other) const{
- Dictionary<K, V, Capacity> slownik_nowy = *this;
+Dictionary<K,V,Capacity> Dictionary<K,V,Capacity>::operator+(const Dictionary &other) const
+{
+  Dictionary<K, V, Capacity> slownik_nowy = *this;
   
   for (auto *it : other.table)
   {
     auto *temp = it;
     while (temp != nullptr)
     {
-      size_t idx = hash(temp->key);
-      slownik_nowy.insert(temp->key, other[temp->key]);
+      slownik_nowy.insert(temp->key, temp->value);
       temp = temp->next;
     }
   }
+  return slownik_nowy;
 }

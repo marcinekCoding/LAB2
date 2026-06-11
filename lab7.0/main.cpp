@@ -99,46 +99,45 @@ int main() {
   }
   std::cout << "------------------PART 1, 2 and 3------------------"
             << std::endl;
-  //    Dictionary<std::string, int> wordCountTemplated;
-  //    for (auto& word : words)
-  //    {
-  //    	wordCountTemplated[word]++;
-  //    }
-  //    for (auto& word : chosenWords)
-  //    {
-  //    	std::cout << word << ": " << wordCountTemplated[word] <<
-  //    std::endl;
-  //    }
-  //    std::cout << "Dictionary for mapping numbers and number english names:"
-  //    << std::endl; Dictionary<int, std::string> numbersEnglishNames;
-  //    numbersEnglishNames.insert(1, "one");
-  //    numbersEnglishNames.insert(2, "two");
-  //    numbersEnglishNames.insert(100, "hundred");
-  //    std::cout << numbersEnglishNames << std::endl;
+  Dictionary<std::string, int> wordCountTemplated;
+  for (auto &word : words) {
+    wordCountTemplated[word]++;
+  }
+  for (auto &word : chosenWords) {
+    std::cout << word << ": " << wordCountTemplated[word] << std::endl;
+  }
+  std::cout << "Dictionary for mapping numbers and number english names:"
+            << std::endl;
+  Dictionary<int, std::string> numbersEnglishNames;
+  numbersEnglishNames.insert(1, "one");
+  numbersEnglishNames.insert(2, "two");
+  numbersEnglishNames.insert(100, "hundred");
+  std::cout << numbersEnglishNames << std::endl;
+
   std::cout << "------------------PART 4------------------" << std::endl;
-  //    std::cout << numbersEnglishNames << std::endl;
+  std::cout << numbersEnglishNames << std::endl;
 
   std::cout << "------------------PART 5------------------" << std::endl;
-  //    Dictionary<int, std::string> numbersEnglishNames2;
-  //    numbersEnglishNames2.insert(3, "three");
-  //    numbersEnglishNames2.insert(4, "four");
-  //    numbersEnglishNames2.insert(100, "onehundred");
-  //
-  //    auto intersect = numbersEnglishNames.intersect(numbersEnglishNames2);
-  //    std::cout << intersect << std::endl;
+  Dictionary<int, std::string> numbersEnglishNames2;
+  numbersEnglishNames2.insert(3, "three");
+  numbersEnglishNames2.insert(4, "four");
+  numbersEnglishNames2.insert(100, "onehundred");
+
+  auto intersect = numbersEnglishNames.intersect(numbersEnglishNames2);
+  std::cout << intersect << std::endl;
 
   std::cout << "------------------PART 6------------------" << std::endl;
-  //    auto sum = numbersEnglishNames + numbersEnglishNames2;
-  //    std::cout << sum << std::endl;
+  auto sum = numbersEnglishNames + numbersEnglishNames2;
+  std::cout << sum << std::endl;
+
   std::cout << "------------------PART 7------------------" << std::endl;
-  //    try {
-  //    	numbersEnglishNames.remove(3);
-  //    }
-  //    catch (std::exception& e) {
-  //    	std::cout << e.what() << std::endl;
-  //    }
-  //    auto intersect2 = numbersEnglishNames.intersect(numbersEnglishNames2);
-  //    std::cout << intersect2 << std::endl;
-  //
-  //    return 0;
+  try {
+    numbersEnglishNames.remove(3);
+  } catch (std::exception &e) {
+    std::cout << e.what() << std::endl;
+  }
+  auto intersect2 = numbersEnglishNames.intersect(numbersEnglishNames2);
+  std::cout << intersect2 << std::endl;
+
+  return 0;
 }
