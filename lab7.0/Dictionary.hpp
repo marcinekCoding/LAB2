@@ -3,7 +3,9 @@
 #include <cstddef>
 #include <optional>
 #include <ostream>
-template <typename K, typename V> struct KeyValuePair {
+template <typename K, typename V>
+struct KeyValuePair
+{
 public:
   K key;
   V value;
@@ -13,7 +15,9 @@ public:
   KeyValuePair(K key, V value) : key(key), value(value), next(nullptr) {}
 };
 
-template <typename K, typename V, int Capacity> class Dictionary {
+template <typename K, typename V, int Capacity>
+class Dictionary
+{
 protected:
   KeyValuePair<K, V> *table[Capacity];
 
@@ -33,21 +37,27 @@ public:
   bool remove(const K &key);
 
   void intersect(const Dictionary &other) const;
+  Dictionary operator+(const Dictionary &other) const;
 };
 
 template <typename K, typename V, int Capacity>
-Dictionary<K, V, Capacity>::Dictionary() {
-  for (auto *it : table) {
+Dictionary<K, V, Capacity>::Dictionary()
+{
+  for (auto *it : table)
+  {
     it = nullptr;
   }
 }
 template <typename K, typename V, int Capacity>
-Dictionary<K, V, Capacity>::~Dictionary() {
-  for (auto *value : table) {
+Dictionary<K, V, Capacity>::~Dictionary()
+{
+  for (auto *value : table)
+  {
     auto *next = value;
     auto *curr = value;
 
-    while (next != nullptr) {
+    while (next != nullptr)
+    {
       curr = next;
       next = curr->next;
       delete curr;
@@ -58,21 +68,27 @@ Dictionary<K, V, Capacity>::~Dictionary() {
   }
 }
 template <typename K, typename V, int Capacity>
-size_t Dictionary<K, V, Capacity>::hash(const K &key) const {
+size_t Dictionary<K, V, Capacity>::hash(const K &key) const
+{
   Hash<K> hasher;
   return hasher(key) % Capacity;
 }
 template <typename K, typename V, int Capacity>
-void Dictionary<K, V, Capacity>::insert(const K &key, const V &value) {
+void Dictionary<K, V, Capacity>::insert(const K &key, const V &value)
+{
   size_t idx = hash(key);
 
   auto *nowy = new KeyValuePair<K, V>(key, value);
 
-  if (table[idx] == nullptr) {
+  if (table[idx] == nullptr)
+  {
     table[idx] = nowy;
-  } else {
+  }
+  else
+  {
     auto *temp = table[idx];
-    while (temp->next != nullptr) {
+    while (temp->next != nullptr)
+    {
       temp = temp->next;
     }
     temp->next = nowy;
@@ -80,14 +96,17 @@ void Dictionary<K, V, Capacity>::insert(const K &key, const V &value) {
 }
 template <typename K, typename V, int Capacity>
 std::ostream &operator<<(std::ostream &os,
-                         const Dictionary<K, V, Capacity> &d) {
+                         const Dictionary<K, V, Capacity> &d)
+{
   // operaoyt wypisyuwania
-  for (const auto *it : d.table) {
+  for (const auto *it : d.table)
+  {
     if (it == nullptr)
       continue;
     os << "Key: " << it->key << "\n";
     auto *temp = it;
-    while (temp != nullptr) {
+    while (temp != nullptr)
+    {
       os << temp->value << " ";
       temp = temp->next;
     }
@@ -96,35 +115,44 @@ std::ostream &operator<<(std::ostream &os,
   return os;
 }
 template <typename K, typename V, int Capacity>
-V &Dictionary<K, V, Capacity>::operator[](const K &key) {
+V &Dictionary<K, V, Capacity>::operator[](const K &key)
+{
   size_t idx = hash(key);
   auto *nowy = new KeyValuePair<K, V>(key, V{});
 
-  if (table[idx] == nullptr) {
+  if (table[idx] == nullptr)
+  {
     table[idx] = nowy;
     return nowy->value;
   }
   // tutaj nie wiem do konca o co chodzi w poleceniu
   auto *temp = table[idx];
-  while (temp->next != nullptr) {
-    if (temp->key == key) {
+  while (temp->next != nullptr)
+  {
+    if (temp->key == key)
+    {
       return temp->value;
     }
     temp = temp->next;
   }
-  if(temp->key == key) return temp->value;
+  if (temp->key == key)
+    return temp->value;
   temp->next = nowy;
   return nowy->value;
 }
 template <typename K, typename V, int Capacity>
-std::optional<V> Dictionary<K, V, Capacity>::get(const K &key) const {
+std::optional<V> Dictionary<K, V, Capacity>::get(const K &key) const
+{
   size_t idx = hash(key);
-  if (table[idx] == nullptr) {
+  if (table[idx] == nullptr)
+  {
     return std::nullopt;
   }
   auto *temp = table[idx];
-  while (temp != nullptr) {
-    if (temp->key == key) {
+  while (temp != nullptr)
+  {
+    if (temp->key == key)
+    {
       return temp->value;
     }
     temp = temp->next;
@@ -133,17 +161,22 @@ std::optional<V> Dictionary<K, V, Capacity>::get(const K &key) const {
 }
 
 template <typename K, typename V, int Capacity>
-bool Dictionary<K, V, Capacity>::remove(const K &key) {
+bool Dictionary<K, V, Capacity>::remove(const K &key)
+{
   size_t idx = hash(key);
-  if (table[idx] == nullptr) {
+  if (table[idx] == nullptr)
+  {
     return false;
   }
   auto *temp = table[idx];
   KeyValuePair<K, V> *prev = nullptr;
 
-  while (temp != nullptr) {
-    if (temp->key == key) {
-      if (prev == nullptr) {
+  while (temp != nullptr)
+  {
+    if (temp->key == key)
+    {
+      if (prev == nullptr)
+      {
         table[idx] = temp->next;
         delete temp;
         return true;
@@ -160,12 +193,21 @@ bool Dictionary<K, V, Capacity>::remove(const K &key) {
 }
 
 template <typename K, typename V, int Capacity>
-void Dictionary<K, V, Capacity>::intersect(const Dictionary &other) const {
-  Dictionary<K, V, Capacity> slownik_nowy = *this;
+void Dictionary<K, V, Capacity>::intersect(const Dictionary &other) const
+{
+  // nie chce mi sie 
+}
 
-  for (auto *it : other.table) {
+
+template <typename K, typename V, int Capacity>
+Dictionary<K,V,Capacity> Dictionary<K,V,Capacity>::operator+(const Dictionary &other) const{
+ Dictionary<K, V, Capacity> slownik_nowy = *this;
+  
+  for (auto *it : other.table)
+  {
     auto *temp = it;
-    while (temp != nullptr) {
+    while (temp != nullptr)
+    {
       size_t idx = hash(temp->key);
       slownik_nowy.insert(temp->key, other[temp->key]);
       temp = temp->next;
